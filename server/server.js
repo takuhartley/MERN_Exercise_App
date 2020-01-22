@@ -1,7 +1,9 @@
+// Requirements
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
-// Requirements
+// Configuration
 require('dotenv').config();
 
 // Create express server
@@ -12,6 +14,14 @@ const port = process.env.PORT || 5000;
 // Parse JSON
 app.use(cors());
 app.use(express.json());
+
+// Database
+const uri = process.env.ATLAS_URI;
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
+const connection = mongoose.connection;
+connection.once('open', () => {
+    console.log("MongoDB: Database connection established dawg");
+})
 
 // Listening to server
 app.listen(port, () => {
